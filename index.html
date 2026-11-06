@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7e8eb">
+  <meta name="description" content="Un pequeño mundo hecho con cariño.">
+  <title>Un mundo para mi niña ♡</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
+    :root{
+      --rose:#d8a7b5;--rose-dark:#a96f82;--pink:#f3dfe4;--pink-light:#fbf3f2;
+      --cream:#fcf9f5;--ink:#55464b;--muted:#927f85;--line:#eadde0;
+      --white:#fffdfb;--shadow:0 18px 55px rgba(128,83,99,.10);
+      --serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',Arial,sans-serif;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:90px}
+    body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);line-height:1.65;overflow-x:hidden}
+    button,a{font:inherit}
+    button{cursor:pointer}
+    a{color:inherit;text-decoration:none}
+    .topbar{position:fixed;z-index:30;top:0;left:0;width:100%;background:rgba(252,249,245,.88);backdrop-filter:blur(16px);border-bottom:1px solid rgba(234,221,224,.75)}
+    .nav{max-width:1180px;margin:auto;padding:13px 26px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{font-family:var(--serif);font-size:20px;color:var(--rose-dark);white-space:nowrap}
+    .navlinks{display:flex;gap:19px;align-items:center;font-size:12px;color:var(--muted)}
+    .navlinks a{transition:.2s}.navlinks a:hover{color:var(--rose-dark)}
+    .music-toggle,.menu-toggle{border:1px solid var(--line);background:var(--white);color:var(--rose-dark);border-radius:50px;padding:9px 14px;font-size:12px}
+    .menu-toggle{display:none}
+    .hero{min-height:100vh;display:grid;place-items:center;text-align:center;padding:130px 22px 80px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 18%,#fff 0,#fbf0f1 42%,#f5e4e8 100%)}
+    .hero:before,.hero:after{content:"";position:absolute;border:1px solid rgba(216,167,181,.35);border-radius:50%;width:440px;height:440px;pointer-events:none}
+    .hero:before{left:-230px;top:16%}.hero:after{right:-230px;bottom:-8%}
+    .hero-inner{max-width:760px;position:relative;z-index:1}
+    .eyebrow{letter-spacing:.22em;text-transform:uppercase;font-size:10px;color:var(--rose-dark);font-weight:700}
+    h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.18}
+    h1{font-size:clamp(48px,8vw,88px);margin:18px 0;color:#795b65}
+    .hero p{max-width:520px;margin:0 auto 27px;color:var(--muted);font-size:15px}
+    .hero-date{font-size:12px;letter-spacing:.12em;color:var(--rose-dark);margin:0 0 30px}
+    .primary-btn,.secondary-btn{border:0;border-radius:50px;padding:14px 25px;background:var(--rose-dark);color:white;box-shadow:0 8px 22px rgba(169,111,130,.22);transition:transform .2s,box-shadow .2s}
+    .primary-btn:hover,.secondary-btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(169,111,130,.28)}
+    .secondary-btn{background:var(--white);border:1px solid var(--line);color:var(--rose-dark);box-shadow:none}
+    .hero-flower{position:absolute;color:rgba(169,111,130,.22);font-size:28px;animation:drift 7s ease-in-out infinite}
+    .f1{top:23%;left:16%}.f2{top:30%;right:15%;animation-delay:1s}.f3{bottom:20%;left:22%;animation-delay:2s}.f4{bottom:18%;right:21%;animation-delay:3s}
+    @keyframes drift{50%{transform:translateY(-13px) rotate(12deg)}}
+    .section{padding:105px 24px;position:relative}
+    .section:nth-of-type(even){background:#fffdfb}
+    .container{max-width:1080px;margin:auto}
+    .section-head{text-align:center;max-width:650px;margin:0 auto 48px}
+    .section-head h2{font-size:clamp(34px,5vw,52px);margin:10px 0 12px;color:#795b65}
+    .section-head p{color:var(--muted);margin:0}
+    .kicker{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose-dark);font-weight:700}
+    .story-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .story-card,.note-card,.game-card,.dream-card{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:25px;box-shadow:var(--shadow)}
+    .story-card .date{font-size:11px;letter-spacing:.12em;color:var(--rose-dark);font-weight:700}
+    .story-card h3,.note-card h3,.game-card h3,.dream-card h3{font-size:23px;margin:12px 0 8px}
+    .story-card p,.note-card p,.game-card p,.dream-card p{font-size:13px;color:var(--muted);margin:0}
+    .album-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .photo-card{background:white;padding:12px 12px 20px;border-radius:5px;box-shadow:0 12px 30px rgba(80,55,65,.10);transform:rotate(var(--tilt));transition:.25s}
+    .photo-card:hover{transform:rotate(0) translateY(-6px)}
+    .photo-placeholder{aspect-ratio:4/4.6;background:linear-gradient(145deg,#f4e0e5,#ead6d8 55%,#f8efeb);display:grid;place-items:center;color:#a77d89;font-family:var(--serif);font-size:35px;overflow:hidden}
+    .photo-placeholder img{width:100%;height:100%;object-fit:cover}
+    .photo-card strong{display:block;text-align:center;font-family:var(--serif);font-weight:500;margin-top:13px}
+    .photo-card small{display:block;text-align:center;color:var(--muted);font-size:10px}
+    .jar-wrap{text-align:center}
+    .jar{width:min(270px,75vw);height:300px;margin:0 auto 22px;border:3px solid #d8b7c0;border-top:0;border-radius:25px 25px 55px 55px;background:linear-gradient(180deg,rgba(255,255,255,.45),rgba(243,223,228,.55));position:relative;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;padding:28px;gap:9px;box-shadow:inset 0 0 30px rgba(255,255,255,.7)}
+    .jar:before{content:"";position:absolute;top:-10px;left:12%;width:76%;height:18px;border:3px solid #d8b7c0;border-radius:8px;background:#f7e8eb}
+    .heart-note{border:0;background:transparent;font-size:28px;transition:transform .2s;filter:drop-shadow(0 3px 4px #d7b5bf)}
+    .heart-note:hover{transform:scale(1.25) rotate(-8deg)}
+    .note-output{min-height:64px;max-width:520px;margin:15px auto;padding:17px 22px;background:white;border:1px solid var(--line);border-radius:14px;color:var(--rose-dark);font-family:var(--serif);font-size:19px}
+    .notes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .note-card{cursor:pointer;transition:.2s}.note-card:hover{transform:translateY(-4px);border-color:#d8b1bd}
+    .note-icon{font-size:24px}
+    .games-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .game-card{text-align:center}
+    .game-card .game-symbol{font-size:34px}
+    .game-card button{margin-top:18px}
+    .game-area{display:none;margin:24px auto 0;max-width:650px;background:white;border:1px solid var(--line);border-radius:18px;padding:25px;text-align:center;box-shadow:var(--shadow)}
+    .game-area.active{display:block}
+    .quiz-options{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:18px}
+    .quiz-options button{border:1px solid var(--line);background:var(--pink-light);border-radius:30px;padding:10px 16px;color:var(--ink)}
+    .memory-board{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;max-width:340px;margin:18px auto}
+    .memory-tile{aspect-ratio:1;border:1px solid var(--line);background:var(--pink-light);border-radius:12px;font-size:24px}
+    .music-panel{max-width:680px;margin:auto;background:linear-gradient(130deg,#f8e9ec,#fffaf7);border:1px solid var(--line);border-radius:24px;padding:30px;display:flex;align-items:center;gap:25px}
+    .record{width:130px;height:130px;flex:none;border-radius:50%;background:repeating-radial-gradient(circle,#3f3940 0 2px,#28252b 3px 5px);display:grid;place-items:center;animation:spin 8s linear infinite;animation-play-state:paused}
+    .record.playing{animation-play-state:running}
+    .record:after{content:"♡";width:42px;height:42px;border-radius:50%;background:#d9a8b7;color:white;display:grid;place-items:center;font-size:22px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .music-info h3{font-family:var(--serif);font-size:26px;margin:0 0 4px}.music-info p{font-size:12px;color:var(--muted);margin:0 0 15px}
+    .room{min-height:350px;border-radius:24px;background:linear-gradient(#f4e7ee 0 58%,#e8d9d5 58%);position:relative;overflow:hidden;border:1px solid var(--line);display:flex;align-items:end;justify-content:center;padding:30px}
+    .window{position:absolute;top:35px;right:9%;width:145px;height:165px;border:9px solid #fff9f5;border-radius:80px 80px 8px 8px;background:linear-gradient(#d7d8e8,#f5dce2);box-shadow:0 8px 20px #b99da8}
+    .window:before{content:"☾";display:grid;place-items:center;height:100%;font-size:46px;color:#fff}
+    .plant{position:absolute;left:9%;bottom:25px;font-size:55px}
+    .rug{position:absolute;bottom:12px;width:60%;height:55px;border-radius:50%;background:#d9b9c3}
+    .dog{position:relative;z-index:2;border:0;background:transparent;font-size:95px;filter:drop-shadow(0 8px 5px rgba(100,65,70,.15));transition:transform .2s;animation:dogBob 3s ease-in-out infinite}
+    .dog svg{width:112px;height:104px;display:block}.dog:hover{transform:scale(1.12)}
+    @keyframes dogBob{50%{translate:0 -7px}}
+    .dog-caption{position:absolute;z-index:3;bottom:145px;left:50%;transform:translateX(-50%);background:#fffdfb;border:1px solid var(--line);border-radius:16px;padding:8px 13px;font-size:12px;white-space:nowrap;box-shadow:var(--shadow)}
+    .counter{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:30px 0}
+    .count-box{min-width:100px;padding:17px 15px;background:white;border:1px solid var(--line);border-radius:15px;text-align:center}
+    .count-box strong{display:block;font-family:var(--serif);font-size:34px;color:var(--rose-dark);line-height:1.1}
+    .count-box span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em}
+    .dream-list{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .dream-card{display:flex;align-items:center;gap:13px;padding:17px}
+    .dream-card span{font-size:25px}
+    .finale{text-align:center;background:radial-gradient(ellipse at center,#fff7f8,#f2dfe5);padding:120px 24px}
+    .finale h2{font-size:clamp(38px,6vw,65px);color:#795b65;margin:12px auto}
+    .final-letter{max-width:650px;margin:25px auto;background:rgba(255,255,255,.8);padding:30px;border:1px solid var(--line);border-radius:18px;font-family:var(--serif);font-size:18px;color:#795b65}
+    footer{text-align:center;padding:30px;color:var(--muted);font-size:11px;background:var(--cream)}
+    .pet svg{width:57px;height:54px;display:block}.pet{position:fixed;z-index:25;right:20px;bottom:20px;width:76px;height:76px;border:0;border-radius:50%;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);font-size:42px;display:grid;place-items:center}
+    .pet-label{position:fixed;z-index:24;right:104px;bottom:38px;background:white;border:1px solid var(--line);border-radius:14px;padding:9px 13px;font-size:11px;box-shadow:var(--shadow);max-width:190px}
+    .heart-rain{position:fixed;z-index:50;top:-30px;pointer-events:none;color:#d98ca5;animation:fall linear forwards}
+    @keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:0}}
+    .modal{position:fixed;inset:0;z-index:60;background:rgba(64,45,53,.38);display:none;place-items:center;padding:20px}
+    .modal.show{display:grid}
+    .modal-box{width:min(520px,100%);background:var(--cream);border-radius:20px;padding:32px;position:relative;box-shadow:0 25px 80px #5e414b33;text-align:center}
+    .modal-box h3{font-size:30px;color:#795b65;margin:8px}
+    .modal-box p{color:var(--muted);font-size:14px}
+    .close-modal{position:absolute;right:14px;top:12px;border:0;background:transparent;font-size:22px;color:var(--muted)}
+    .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s,transform .7s}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    @media(max-width:850px){.navlinks{gap:10px;font-size:11px}.story-grid,.notes-grid,.games-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:650px){
+      .nav{padding:12px 17px}.menu-toggle{display:block}.navlinks{display:none;position:absolute;top:58px;left:12px;right:12px;background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow);flex-direction:column;align-items:stretch}
+      .navlinks.open{display:flex}.navlinks a{padding:6px}.music-toggle{padding:8px 11px}.brand{font-size:17px}
+      .section{padding:78px 18px}.story-grid,.album-grid,.notes-grid,.games-grid,.dream-list{grid-template-columns:1fr}
+      .music-panel{flex-direction:column;text-align:center}.record{width:112px;height:112px}
+      .room{min-height:310px}.window{right:8%;width:110px;height:130px}.dog svg{width:98px;height:92px}.pet{width:64px;height:64px;right:13px;bottom:13px}.pet svg{width:49px;height:47px}.pet-label{right:85px;bottom:27px}
+      .final-letter{padding:22px;font-size:16px}
+    }
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+    .photo-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+    display: block;
+}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav">
+      <a class="brand" href="#inicio">Un mundo para mi niña ♡</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
+      <div class="navlinks" id="navLinks">
+        <a href="#historia">Nuestra historia</a><a href="#album">Recuerdos</a><a href="#cartas">Cartas</a>
+        <a href="#juegos">Juegos</a><a href="#rincon">Nuestro rincón</a><a href="#futuro">Futuro</a>
+      </div>
+      <button class="music-toggle" id="musicToggle">♫ Música</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <span class="hero-flower f1">✿</span><span class="hero-flower f2">♡</span><span class="hero-flower f3">✧</span><span class="hero-flower f4">❀</span>
+      <div class="hero-inner">
+        <div class="eyebrow">Una pequeña sorpresa hecha para ti</div>
+        <h1>Un mundo<br>para mi niña</h1>
+        <p>Entre tantas personas y tantos caminos, qué bonito fue coincidir contigo. Preparé este pequeño lugar para guardar un poquito de todo lo que significas para mí.</p>
+        <div class="hero-date">DESDE EL 05 · 09 · 2026</div>
+        <button class="primary-btn" id="enterBtn">Entrar a nuestro mundo ♡</button>
+      </div>
+    </section>
+
+    <section class="section" id="historia">
+      <div class="container">
+        <div class="section-head reveal"><div class="kicker">Capítulo uno</div><h2>Donde comenzó todo</h2><p>Una historia que empezó detrás de una pantalla y que terminó convirtiéndose en algo muy especial.</p></div>
+        <div class="story-grid">
+          <article class="story-card reveal"><div class="date">EL COMIENZO</div><h3>Un primer encuentro</h3><p>Nos conocimos por roblox y nunca imagine terminar tan enamorado de esta manera estoy loco por ti mi amor.</p></article>
+          <article class="story-card reveal"><div class="date">POCO A POCO</div><h3>Conociéndonos</h3><p>Desde el primer dia me caiste muy bien, me contabas muchas historias y siempre me divertia contigo ni yo se en que momento me enamore tanto simplemente me complementas.</p></article>
+          <article class="story-card reveal"><div class="date">05 · 09 · 2026</div><h3>Un día especial</h3><p>Recordare este dia por siempre ya que es el dia en que consegui la mejor novia del mundo.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="album">
+      <div class="container">
+        <div class="section-head reveal"><div class="kicker"></div><h2>La niña mas hermosa</h2><p>Eres la mujer mas hermosa y te amo muchoooo.</p></div>
+        <div class="album-grid">
+          <div class="photo-card reveal" style="--tilt:-2deg">
+    <div class="photo-placeholder">
+      <img src="assets/images/lia3.jpg" alt="Un recuerdo especial">
+    </div>
+    <strong>La niña mas bonita</strong>
+    
+  </div>
+          <div class="photo-card reveal" style="--tilt:-2deg">
+    <div class="photo-placeholder">
+      <img src="assets/images/lia.jpg" alt="Un recuerdo especial">
+    </div>
+    <strong>Pasaria viendo esos ojos tan hermosos por siempre</strong>
+    
+  </div>
+          <div class="photo-card reveal" style="--tilt:-2deg">
+    <div class="photo-placeholder">
+      <img src="assets/images/lia2.jpg" alt="Un recuerdo especial">
+    </div>
+    <strong>QUE BONITA ERES </strong>
+    
+  </div>
+          
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="razones">
+      <div class="container">
+        <div class="section-head reveal"><div class="kicker">Un montón de motivos</div><h2>Razones por las que te quiero</h2></div>
+        <div class="jar-wrap reveal">
+          <div class="jar" id="heartJar">
+            <button class="heart-note" data-message="Me encanta como eres tan divertida cuando hablamos.">♡</button>
+            <button class="heart-note" data-message="Me gusta la manera en que me tratas.">♡</button>
+            <button class="heart-note" data-message="Me gusta pasar mi tiempo solo contigo eres mi mundo entero.">♡</button>
+            <button class="heart-note" data-message="Me encanta tu sonriza y como te poner nerviosa cuando te veo pero que quieres que haga eres hermosa.">♡</button>
+            <button class="heart-note" data-message="Ojala y nunca se terminen los momentos que paso contigo amorcito">♡</button>
+            <button class="heart-note" data-message="Quiero seguir creando recuerdos bonitos contigo.">♡</button>
+          </div>
+          <div class="note-output" id="reasonOutput">Elige un corazón para descubrir una razón ♡</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="cartas">
+      <div class="container">
+        <div class="section-head reveal"><div class="kicker">Palabras que guardo para ti</div><h2>Cartitas para mi niña</h2><p>Hay mensajes para distintos momentos. Abre el que necesites leer.</p></div>
+        <div class="notes-grid">
+          <article class="note-card reveal" data-title="Cuando tengas un día difícil" data-text="Nose cuantos momentos malos tengas que pasar o si a veces te hago sentir mal pero enserio me importas mucho amorcito si te sientes mal quero que me digas porfis."><div class="note-icon">✉</div><h3>Para un día difícil</h3><p>Un pequeño recordatorio de cuánto vales.</p></article>
+          <article class="note-card reveal" data-title="Aunque la distancia nos separe" data-text="Aunque la distacia entre nosotros sea grande el amor que siento por ti es aun mayor enserio eres muy especial para mi carboncito."><div class="note-icon">♡</div><h3>Cuando me extrañes</h3><p>Un abrazo convertido en palabras.</p></article>
+          <article class="note-card reveal" data-title="Cuando duermas recuerda" data-text=" Amor te amo mucho cuando duermas no quiero que olvides que te amo demasiado y cuidado con el cuco que lo envie jaja.""><div class="note-icon">☾</div><h3>Antes de dormir</h3><p>Un mensaje para cerrar el día.</p></article>
+        </div>
+      </div>
+    </section>
+
+
+
+    <section class="section" id="musica">
+      <div class="container">
+        <div class="section-head reveal"><div class="kicker">Una melodía para nosotros</div><h2>Tu cancion favorita</h2></div>
+        <div class="music-panel reveal">
+          <div class="record" id="record"></div>
+          <div class="music-info"><h3>Yoko</h3><p>Una canción que quiero dedicarte ♡</p><button class="primary-btn" id="playBtn">Reproducir</button><audio id="song" src="assets/music/Yoko.mp3"></audio></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="rincon">
+      <div class="container">
+        <div class="section-head reveal"><div class="kicker">Un lugar tranquilo</div><h2>Nuestro pequeño rincón</h2><p>Me dijiste que querias un chihuahua por ahora espero que te guste este jaja.</p></div>
+        <div class="room reveal">
+          <div class="window"></div><div class="plant">🪴</div><div class="rug"></div>
+          <div class="dog-caption" id="dogCaption">¡Hola! Soy tu pequeño compañero.</div>
+          <button class="dog" id="roomDog" aria-label="Interactuar con el chihuahua"><svg viewBox="0 0 140 130" role="img" aria-label="Chihuahua marrón">
+  <ellipse cx="70" cy="111" rx="39" ry="8" fill="#bda1a2" opacity=".35"/>
+  <path d="M37 43 Q12 4 20 7 Q47 10 55 42Z" fill="#8b5139" stroke="#70402f" stroke-width="3"/>
+  <path d="M103 43 Q128 4 120 7 Q93 10 85 42Z" fill="#8b5139" stroke="#70402f" stroke-width="3"/>
+  <path d="M39 42 Q26 17 28 17 Q43 23 51 45Z" fill="#d69b8d"/>
+  <path d="M101 42 Q114 17 112 17 Q97 23 89 45Z" fill="#d69b8d"/>
+  <ellipse cx="70" cy="67" rx="43" ry="43" fill="#b8754e" stroke="#70402f" stroke-width="3"/>
+  <ellipse cx="70" cy="83" rx="25" ry="19" fill="#f1d6c2"/>
+  <ellipse cx="54" cy="66" rx="4.5" ry="6" fill="#382b2b"/>
+  <ellipse cx="86" cy="66" rx="4.5" ry="6" fill="#382b2b"/>
+  <ellipse cx="70" cy="80" rx="6" ry="4.5" fill="#493332"/>
+  <path d="M70 84 Q65 92 59 88 M70 84 Q75 92 81 88" fill="none" stroke="#70402f" stroke-width="2" stroke-linecap="round"/>
+  <path d="M49 91 Q70 103 91 91" fill="none" stroke="#d99a91" stroke-width="3" stroke-linecap="round"/>
+  <path d="M42 53 Q49 45 56 48 M84 48 Q91 45 98 53" fill="none" stroke="#d99a91" stroke-width="3" stroke-linecap="round"/>
+  <path d="M62 25 Q70 15 78 25 L75 34 L65 34Z" fill="#dca5b4" stroke="#fff0f3" stroke-width="2"/>
+  <circle cx="70" cy="25" r="4" fill="#f8e6eb"/>
+</svg></button>
+        </div>
+        <p style="text-align:center;color:var(--muted);font-size:12px;margin-top:14px">Pulsa al pequeño chihuahua marrón para saludarlo.</p>
+      </div>
+    </section>
+
+    <section class="section" id="futuro">
+      <div class="container">
+        <div class="section-head reveal"><div class="kicker">Lo que todavía nos espera</div><h2>Y nuestra historia continúa</h2><p>Un contador para recordar cuándo comenzó esta etapa tan bonita.</p></div>
+        <div class="counter reveal">
+          <div class="count-box"><strong id="days">0</strong><span>Días</span></div>
+          <div class="count-box"><strong id="hours">0</strong><span>Horas</span></div>
+          <div class="count-box"><strong id="minutes">0</strong><span>Minutos</span></div>
+          <div class="count-box"><strong id="seconds">0</strong><span>Segundos</span></div>
+        </div>
+        <div class="dream-list">
+          <div class="dream-card reveal"><span>🌷</span><div><h3>Más recuerdos</h3><p>Seguir guardando momentos que nos hagan felices.</p></div></div>
+          <div class="dream-card reveal"><span>☁</span><div><h3>Nuevas experiencias</h3><p>Conocer lugares y compartir cosas nuevas.</p></div></div>
+          <div class="dream-card reveal"><span>♡</span><div><h3>Seguir aprendiendo</h3><p>Crecer, conversar y apoyarnos.</p></div></div>
+          <div class="dream-card reveal"><span>✧</span><div><h3>Muchos capítulos más</h3><p>Porque esta historia todavía tiene mucho por contar.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="finale" id="final">
+      <div class="container reveal">
+        <div class="kicker">Un último detalle</div>
+        <h2>Gracias por ser parte<br>de mi mundo</h2>
+        <p style="color:var(--muted);max-width:520px;margin:auto">No necesito que cada día sea perfecto. Me basta con que sigamos encontrando motivos para compartirlo.</p>
+        <div class="final-letter">Mi niña, hize este mundo solo para ti espero que te haya gustado enserio te amo mucho amorcito talvez no sea la mejor persona o el las guapo pero te amoooo mas que nadie, eres lo mejor de mi mundo y quiero crear muchos mas recuerdos contigo y siempre recuerda que este tonto TE AMA MUCHO MUCHI MUCHO MUCHISIMO. ♡</div>
+        <button class="primary-btn" id="heartRainBtn">Una última sorpresa ♡</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>Hecho con cariño · 05.09.2026 ♡</footer>
+
+  <button class="pet" id="petBtn" aria-label="Hablar con el chihuahua"><svg viewBox="0 0 140 130" role="img" aria-label="Chihuahua marrón">
+  <ellipse cx="70" cy="111" rx="39" ry="8" fill="#bda1a2" opacity=".35"/>
+  <path d="M37 43 Q12 4 20 7 Q47 10 55 42Z" fill="#8b5139" stroke="#70402f" stroke-width="3"/>
+  <path d="M103 43 Q128 4 120 7 Q93 10 85 42Z" fill="#8b5139" stroke="#70402f" stroke-width="3"/>
+  <path d="M39 42 Q26 17 28 17 Q43 23 51 45Z" fill="#d69b8d"/>
+  <path d="M101 42 Q114 17 112 17 Q97 23 89 45Z" fill="#d69b8d"/>
+  <ellipse cx="70" cy="67" rx="43" ry="43" fill="#b8754e" stroke="#70402f" stroke-width="3"/>
+  <ellipse cx="70" cy="83" rx="25" ry="19" fill="#f1d6c2"/>
+  <ellipse cx="54" cy="66" rx="4.5" ry="6" fill="#382b2b"/>
+  <ellipse cx="86" cy="66" rx="4.5" ry="6" fill="#382b2b"/>
+  <ellipse cx="70" cy="80" rx="6" ry="4.5" fill="#493332"/>
+  <path d="M70 84 Q65 92 59 88 M70 84 Q75 92 81 88" fill="none" stroke="#70402f" stroke-width="2" stroke-linecap="round"/>
+  <path d="M49 91 Q70 103 91 91" fill="none" stroke="#d99a91" stroke-width="3" stroke-linecap="round"/>
+  <path d="M42 53 Q49 45 56 48 M84 48 Q91 45 98 53" fill="none" stroke="#d99a91" stroke-width="3" stroke-linecap="round"/>
+  <path d="M62 25 Q70 15 78 25 L75 34 L65 34Z" fill="#dca5b4" stroke="#fff0f3" stroke-width="2"/>
+  <circle cx="70" cy="25" r="4" fill="#f8e6eb"/>
+</svg></button>
+  <div class="pet-label" id="petLabel">¡Hola! Soy tu pequeño chihuahua.</div>
+
+  <div class="modal" id="modal">
+    <div class="modal-box"><button class="close-modal" id="closeModal" aria-label="Cerrar">×</button><div style="font-size:34px">♡</div><h3 id="modalTitle">Una cartita para ti</h3><p id="modalText"></p><button class="secondary-btn" id="modalOk">Cerrar</button></div>
+  </div>
+
+  <script>
+    // Personaliza aquí la fecha si alguna vez cambia.
+    const relationshipStart = new Date(2026, 8, 5, 0, 0, 0);
+    const $ = (selector) => document.querySelector(selector);
+
+    // Mensaje especial solo en la primera visita de este navegador.
+    if (!localStorage.getItem('miNinaVisitada')) {
+      setTimeout(() => openModal('Bienvenida a nuestro mundo ♡',
+        'Preparé este pequeño lugar para ti. Explora con calma; hay recuerdos, cartas y detalles esperando por ti.'), 900);
+      localStorage.setItem('miNinaVisitada', 'yes');
+    }
+
+    function openModal(title, text) {
+      $('#modalTitle').textContent = title;
+      $('#modalText').textContent = text;
+      $('#modal').classList.add('show');
+    }
+    function closeModal(){ $('#modal').classList.remove('show'); }
+    $('#closeModal').addEventListener('click', closeModal);
+    $('#modalOk').addEventListener('click', closeModal);
+    $('#modal').addEventListener('click', e => { if(e.target.id === 'modal') closeModal(); });
+
+    $('#enterBtn').addEventListener('click', () => $('#historia').scrollIntoView({behavior:'smooth'}));
+    $('#menuToggle').addEventListener('click', () => $('#navLinks').classList.toggle('open'));
+    document.querySelectorAll('.navlinks a').forEach(a => a.addEventListener('click', () => $('#navLinks').classList.remove('open')));
+
+    // Efecto de aparición al desplazarse.
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);} });
+    }, {threshold:.12});
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Frasco de razones.
+    document.querySelectorAll('.heart-note').forEach(btn => btn.addEventListener('click', () => {
+      $('#reasonOutput').textContent = btn.dataset.message;
+      heartRain(8);
+    }));
+
+    // Cartas.
+    document.querySelectorAll('.note-card').forEach(card => card.addEventListener('click', () => openModal(card.dataset.title, card.dataset.text)));
+
+    // Contador desde el 5 de septiembre de 2026.
+    function updateCounter(){
+      let diff = Math.max(0, Date.now() - relationshipStart.getTime());
+      const day = 86400000, hour = 3600000, minute = 60000;
+      $('#days').textContent = Math.floor(diff/day);
+      $('#hours').textContent = Math.floor((diff%day)/hour);
+      $('#minutes').textContent = Math.floor((diff%hour)/minute);
+      $('#seconds').textContent = Math.floor((diff%minute)/1000);
+    }
+    updateCounter(); setInterval(updateCounter,1000);
+
+    // Chihuahua marrón: cambia los mensajes al tocar cualquiera de los dos botones.
+    const dogMessages = ['¡Guau! Me alegra verte por aquí.','Creo que alguien te quiere muchísimo.','¿Ya descubriste todas las cartitas?','Te acompaño mientras exploras.','Misión del día: regalar una sonrisa.'];
+    function dogTalk(){
+      const message = dogMessages[Math.floor(Math.random()*dogMessages.length)];
+      $('#dogCaption').textContent = message; $('#petLabel').textContent = message;
+    }
+    $('#roomDog').addEventListener('click', dogTalk);
+    $('#petBtn').addEventListener('click', dogTalk);
+
+    // Música: el navegador puede requerir que la persona pulse reproducir.
+    const song = $('#song');
+    function toggleMusic(){
+      if(song.paused){ song.play().then(()=>{$('#record').classList.add('playing');$('#playBtn').textContent='Pausar';$('#musicToggle').textContent='♫ Pausar música';}).catch(()=>openModal('Añade tu canción ♡','Coloca tu archivo MP3 en assets/music/nuestra-cancion.mp3 y vuelve a pulsar reproducir.')); }
+      else{song.pause();$('#record').classList.remove('playing');$('#playBtn').textContent='Reproducir';$('#musicToggle').textContent='♫ Música';}
+    }
+    $('#playBtn').addEventListener('click',toggleMusic);
+    $('#musicToggle').addEventListener('click',toggleMusic);
+    song.addEventListener('ended',()=>{$('#record').classList.remove('playing');$('#playBtn').textContent='Reproducir';$('#musicToggle').textContent='♫ Música';});
+
+    // Minijuego 1: pregunta editable.
+    function startQuiz(){
+      const area=$('#gameArea');area.classList.add('active');
+      area.innerHTML='<h3>¿En qué fecha nos hicimos novios?</h3><p>Elige una respuesta:</p><div class="quiz-options"><button data-answer="no">5 de agosto</button><button data-answer="yes">5 de septiembre</button><button data-answer="no">15 de septiembre</button></div><p id="quizResult"></p>';
+      area.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{$('#quizResult').textContent=b.dataset.answer==='yes'?'¡Correcto! Ese día comenzó nuestra historia. ♡':'¡Casi! Inténtalo otra vez.';}));
+      area.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+    // Minijuego 2: memoria sencilla.
+    function startMemory(){
+      const area=$('#gameArea');area.classList.add('active');
+      const icons=['♡','✿','☾','✧','♡','✿','☾','✧'].sort(()=>Math.random()-.5);
+      area.innerHTML='<h3>Encuentra las parejas</h3><p>Encuentra las cuatro parejas iguales.</p><div class="memory-board"></div><p id="memoryResult">Parejas encontradas: 0 / 4</p>';
+      const board=area.querySelector('.memory-board');let first=null,lock=false,matches=0;
+      icons.forEach(icon=>{
+        const b=document.createElement('button');b.className='memory-tile';b.textContent='?';b.dataset.icon=icon;board.appendChild(b);
+        b.addEventListener('click',()=>{
+          if(lock||b.classList.contains('matched')||b===first)return;
+          b.textContent=icon;
+          if(!first){first=b;return;}
+          if(first.dataset.icon===b.dataset.icon){first.classList.add('matched');b.classList.add('matched');first=null;matches++;$('#memoryResult').textContent=`Parejas encontradas: ${matches} / 4`;if(matches===4)$('#memoryResult').textContent='¡Lo lograste! Un pequeño triunfo para ti. ♡';}
+          else{lock=true;const prev=first;first=null;setTimeout(()=>{prev.textContent='?';b.textContent='?';lock=false;},750);}
+        });
+      });
+      area.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+    function randomWish(){
+      const wishes=['Ojalá hoy encuentres una razón inesperada para sonreír.','Que nunca te falten motivos para sentirte orgullosa de ti.','Espero que pronto podamos crear otro recuerdo bonito.','Te mereces días tranquilos y llenos de cosas buenas.'];
+      openModal('Un deseo para ti ♡',wishes[Math.floor(Math.random()*wishes.length)]);
+    }
+    // Lluvia de corazones.
+    function heartRain(amount=35){
+      for(let i=0;i<amount;i++){
+        const heart=document.createElement('span');heart.className='heart-rain';heart.textContent=Math.random()>.5?'♡':'♥';
+        heart.style.left=Math.random()*100+'vw';heart.style.fontSize=(12+Math.random()*18)+'px';
+        heart.style.animationDuration=(3+Math.random()*3)+'s';heart.style.opacity=.45+Math.random()*.5;
+        document.body.appendChild(heart);setTimeout(()=>heart.remove(),6500);
+      }
+    }
+    $('#heartRainBtn').addEventListener('click',()=>{heartRain(65);openModal('Para mi niña ♡','Gracias por llegar a mi vida. Este pequeño mundo siempre sera para ti.');});
+  </script>
+</body>
+</html>
